@@ -12,6 +12,7 @@
     <context:property-placeholder location="http://dl.dropboxusercontent.com/s/h8mrp9qt9kt5ikv/applicaction.properties"/>
 
     <bean class="com.fingy.robocall.service.NuanceTextToSpeechService"/>
+    <bean class="com.fingy.robocall.web.controller.NuanceController"/>
     <bean class="com.fingy.robocall.web.controller.TwilioController"/>
 
     <mvc:annotation-driven/>
