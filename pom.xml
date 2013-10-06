@@ -14,6 +14,7 @@
         <version.ehcache>2.5.0</version.ehcache>
         <version.httpclient>4.2.3</version.httpclient>
         <version.jackson>1.9.12</version.jackson>
+        <version.servlet-api>3.0.1</version.servlet-api>
         <version.spring>3.2.3.RELEASE</version.spring>
         <version.twilio>3.4.0</version.twilio>
         <version.xmlapis>1.4.01</version.xmlapis>
@@ -31,6 +32,12 @@
                 <groupId>com.twilio.sdk</groupId>
                 <artifactId>twilio-java-sdk</artifactId>
                 <version>${version.twilio}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${version.servlet-api}</version>
             </dependency>
 
             <dependency>
@@ -80,6 +87,11 @@
         <dependency>
             <groupId>com.twilio.sdk</groupId>
             <artifactId>twilio-java-sdk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <dependency>

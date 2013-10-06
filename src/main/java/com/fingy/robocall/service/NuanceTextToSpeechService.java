@@ -30,10 +30,10 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -58,6 +58,10 @@ public class NuanceTextToSpeechService {
     private @Value("nuance.host") String host;
     private @Value("nuance.aid") String applicationId;
     private @Value("nuance.key") String applicationKey;
+
+    @Autowired
+    public NuanceTextToSpeechService() {
+    }
 
     public NuanceTextToSpeechService(String host, String applicationId, String applicationKey) {
         this.host = host;
@@ -138,8 +142,8 @@ public class NuanceTextToSpeechService {
         EntityUtils.consume(resEntity);
     }
 
-    public static void main(String... args) throws Exception {
-        NuanceTextToSpeechService service = new NuanceTextToSpeechService(args[0], args[1], args[2]);
-        service.convertToSpeech(args[3], "en_US", new FileOutputStream("result.wav"));
-    }
+    //public static void main(String... args) throws Exception {
+    //    NuanceTextToSpeechService service = new NuanceTextToSpeechService(args[0], args[1], args[2]);
+    //    service.convertToSpeech(args[3], "en_US", new FileOutputStream("result.wav"));
+    //}
 }
