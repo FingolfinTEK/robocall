@@ -6,6 +6,9 @@ public class ConversionRequest {
     private String language;
     private String key;
 
+    public ConversionRequest() {
+    }
+
     public ConversionRequest(String text, String language, String key) {
         this.text = text;
         this.language = language;
