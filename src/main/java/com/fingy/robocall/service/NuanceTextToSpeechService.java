@@ -27,10 +27,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -49,17 +50,21 @@ import static com.fingy.robocall.util.HttpClientUtil.createPoolingClientConnecti
 @Service
 public class NuanceTextToSpeechService {
 
-    private static final Pattern HOST_PATTERN = Pattern.compile("([htps]+)://([^:]+):(\\d+)");
+    private static final Pattern HOST_PATTERN = Pattern.compile("(http|https)://([^:]+):(\\d+)");
     private static final String CODEC = "audio/x-wav";
     private static final String TTS = "/NMDPTTSCmdServlet/tts";
+    private static final String APP_ID_PARAM_NAME = "appId";
+    private static final String APP_KEY_PARAM_NAME = "appKey";
+    private static final String TTS_LANG_PARAM_NAME = "ttsLang";
+    public static final String SESSIONID_HEADER_NAME = "x-nuance-sessionid";
 
-    private final PoolingClientConnectionManager manager = createPoolingClientConnectionManager();
+    private final Logger logger = LoggerFactory.getLogger(NuanceTextToSpeechService.class);
+    private final ClientConnectionManager manager = createPoolingClientConnectionManager();
 
-    private @Value("nuance.host") String host;
-    private @Value("nuance.aid") String applicationId;
-    private @Value("nuance.key") String applicationKey;
+    private @Value("${nuance.host}") String host;
+    private @Value("${nuance.aid}") String applicationId;
+    private @Value("${nuance.key}") String applicationKey;
 
-    @Autowired
     public NuanceTextToSpeechService() {
     }
 
@@ -93,9 +98,9 @@ public class NuanceTextToSpeechService {
         uriBuilder.setPort(determinePort());
         uriBuilder.setPath(TTS);
 
-        uriBuilder.addParameter("appId", applicationId);
-        uriBuilder.addParameter("appKey", applicationKey);
-        uriBuilder.addParameter("ttsLang", language);
+        uriBuilder.addParameter(APP_ID_PARAM_NAME, applicationId);
+        uriBuilder.addParameter(APP_KEY_PARAM_NAME, applicationKey);
+        uriBuilder.addParameter(TTS_LANG_PARAM_NAME, language);
 
         return uriBuilder.build();
     }
@@ -121,29 +126,18 @@ public class NuanceTextToSpeechService {
     }
 
     private void processResponse(HttpResponse response, OutputStream outputStream) throws IllegalStateException, IOException {
-        HttpEntity resEntity = response.getEntity();
-        Header sessionId = response.getFirstHeader("x-nuance-sessionid");
-        if (sessionId != null)
-            System.out.println("x-nuance-sessionid: " + sessionId.getValue());
+        Header sessionId = response.getFirstHeader(SESSIONID_HEADER_NAME);
+        logger.info("Session ID header: " + sessionId);
 
-        String status = response.getStatusLine().toString();
-        boolean okFound = status.contains("200 OK");
-        if (okFound) {
-            System.out.println("Response content length: " + resEntity.getContentLength());
-            System.out.println("Chunked?: " + resEntity.isChunked());
-        }
+        HttpEntity resEntity = response.getEntity();
+        logger.info("Received response with status {} and content length {}", response.getStatusLine(), resEntity.getContentLength());
 
         try {
             IOUtils.copy(resEntity.getContent(), outputStream);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error reading response ", e);
         }
 
         EntityUtils.consume(resEntity);
     }
-
-    //public static void main(String... args) throws Exception {
-    //    NuanceTextToSpeechService service = new NuanceTextToSpeechService(args[0], args[1], args[2]);
-    //    service.convertToSpeech(args[3], "en_US", new FileOutputStream("result.wav"));
-    //}
 }

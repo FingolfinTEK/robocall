@@ -3,6 +3,7 @@ package com.fingy.robocall.util;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -46,7 +47,7 @@ public class HttpClientUtil {
 
     }
 
-    public static HttpClient createDefaultHttpClient(PoolingClientConnectionManager manager) {
+    public static HttpClient createDefaultHttpClient(ClientConnectionManager manager) {
         HttpParams params = getDefaultHttpParams();
         DefaultHttpClient defaultHttpClient = new DefaultHttpClient(manager, params);
         return setUpProxyIfNeeded(defaultHttpClient);

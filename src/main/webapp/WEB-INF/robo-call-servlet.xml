@@ -10,10 +10,7 @@
 		  http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <context:property-placeholder location="http://dl.dropboxusercontent.com/s/h8mrp9qt9kt5ikv/applicaction.properties"/>
-
-    <bean class="com.fingy.robocall.service.NuanceTextToSpeechService"/>
-    <bean class="com.fingy.robocall.web.controller.NuanceController"/>
-    <bean class="com.fingy.robocall.web.controller.TwilioController"/>
+    <context:component-scan base-package="com.fingy" />
 
     <mvc:annotation-driven/>
 
