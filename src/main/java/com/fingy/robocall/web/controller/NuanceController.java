@@ -25,10 +25,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @RequestMapping("/text-to-speech")
 public class NuanceController {
-
-    private static final String CONTENT_DISPOSITION_HEADER_NAME = "Content-Disposition";
-    private static final String CONTENT_DISPOSITION_HEADER_VALUE = "attachment;filename=text-as-speech.wav";
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private @Value("${application.key}") String key;
