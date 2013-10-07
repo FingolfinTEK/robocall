@@ -58,7 +58,7 @@ public class NuanceTextToSpeechService {
     private static final String TTS_LANG_PARAM_NAME = "ttsLang";
     public static final String SESSIONID_HEADER_NAME = "x-nuance-sessionid";
 
-    private final Logger logger = LoggerFactory.getLogger(NuanceTextToSpeechService.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ClientConnectionManager manager = createPoolingClientConnectionManager();
 
     private @Value("${nuance.host}") String host;
@@ -74,12 +74,12 @@ public class NuanceTextToSpeechService {
         this.applicationKey = applicationKey;
     }
 
-    public void convertToSpeech(String text, String language, OutputStream outputStream) throws IOException, URISyntaxException {
+    public String convertToSpeech(String text, String language, OutputStream outputStream) throws IOException, URISyntaxException {
         HttpPost conversionRequest = createRequest(language, text);
         HttpClient httpClient = createDefaultHttpClient(manager);
         System.out.println("executing request " + conversionRequest.getRequestLine());
         HttpResponse response = httpClient.execute(conversionRequest);
-        processResponse(response, outputStream);
+        return processResponse(response, outputStream);
     }
 
     private HttpPost createRequest(String language, String text) throws UnsupportedEncodingException, URISyntaxException {
@@ -125,7 +125,7 @@ public class NuanceTextToSpeechService {
         return Integer.parseInt(matchAndExtractGroup(3, "443"));
     }
 
-    private void processResponse(HttpResponse response, OutputStream outputStream) throws IllegalStateException, IOException {
+    private String processResponse(HttpResponse response, OutputStream outputStream) throws IllegalStateException, IOException {
         Header sessionId = response.getFirstHeader(SESSIONID_HEADER_NAME);
         logger.info("Session ID header: " + sessionId);
 
@@ -138,6 +138,8 @@ public class NuanceTextToSpeechService {
             logger.error("Error reading response ", e);
         }
 
+        String contentType = resEntity.getContentType().getValue();
         EntityUtils.consume(resEntity);
+        return contentType;
     }
 }
