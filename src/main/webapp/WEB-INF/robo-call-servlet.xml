@@ -16,7 +16,7 @@
     <mvc:annotation-driven/>
 
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/robocall-db" expected-type="javax.sql.DataSource"/>
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:persistenceUnitName="robocall" p:jtaDataSource-ref="dataSource"/>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:persistenceUnitName="robocall" p:dataSource-ref="dataSource"/>
 
     <task:scheduler id="taskScheduler" pool-size="15"/>
 
