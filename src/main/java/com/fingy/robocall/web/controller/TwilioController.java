@@ -1,9 +1,5 @@
 package com.fingy.robocall.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import com.fingy.robocall.model.CallRequest;
 import com.fingy.robocall.model.dto.Response;
 import com.fingy.robocall.model.dto.RoboCallRequest;
@@ -20,6 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import static com.fingy.robocall.util.SerializationUtil.serializeToString;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -35,21 +35,22 @@ public class TwilioController {
 
     @RequestMapping(value = "/text-to-speech", method = {GET, POST})
     public ResponseEntity<String> call(RoboCallRequest callRequest, HttpServletRequest request) throws TwilioRestException, UnsupportedEncodingException {
+        String rootUrl = RequestUtil.getRequestPathBeforeFragment(request, "/text-to-speech");
         logger.info("Received call request " + callRequest);
-        String url = getTwilioCallCallbackUrl(callRequest, request);
-        logger.info("Callback url is " + url);
 
-        CallRequest requestInfo = twilioService.placeCall(callRequest, url);
+        CallRequest requestInfo = twilioService.placeCall(callRequest, rootUrl);
         return new ResponseEntity<>(requestInfo.getSid(), HttpStatus.OK);
-    }
-
-    private String getTwilioCallCallbackUrl(RoboCallRequest callRequest, HttpServletRequest request) throws UnsupportedEncodingException {
-        String url = RequestUtil.getRequestPathBeforeFragment(request, "/text-to-speech") + "/twilio-callback?";
-        return url + callRequest.toQueryParamString();
     }
 
     @RequestMapping(value = "/twilio-callback", method = {GET, POST})
     public ResponseEntity<String> redirectToNuance(RoboCallRequest callRequest, HttpServletRequest request) throws Exception {
+        logger.info("Received callback " + callRequest);
+        String nuanceUrl = getNuanceControllerConversionUrl(callRequest, request);
+        return createResponse(JAXBUtil.marshallToString(new Response(nuanceUrl)));
+    }
+
+    @RequestMapping(value = "/twilio-status-callback", method = {GET, POST})
+    public ResponseEntity<String> statusCallback(RoboCallRequest callRequest, HttpServletRequest request) throws Exception {
         logger.info("Received callback " + callRequest);
         String nuanceUrl = getNuanceControllerConversionUrl(callRequest, request);
         return createResponse(JAXBUtil.marshallToString(new Response(nuanceUrl)));

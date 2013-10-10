@@ -1,7 +1,5 @@
 package com.fingy.robocall.model.dto;
 
-import com.fingy.robocall.util.RequestUtil;
-
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
@@ -13,6 +11,16 @@ public class RoboCallRequest implements Serializable {
     private String language;
     private String phoneNumber;
     private String key;
+
+    public RoboCallRequest() {
+    }
+
+    public RoboCallRequest(String text, String language, String phoneNumber, String key) {
+        this.text = text;
+        this.language = language;
+        this.phoneNumber = phoneNumber;
+        this.key = key;
+    }
 
     public String getText() {
         return text;

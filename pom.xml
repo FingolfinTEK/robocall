@@ -17,6 +17,7 @@
         <version.httpclient>4.2.3</version.httpclient>
         <version.jackson>1.9.12</version.jackson>
         <version.javaee-api>6.0</version.javaee-api>
+        <version.joda-time>2.3</version.joda-time>
         <version.logback>0.9.29</version.logback>
         <version.servlet-api>3.0.1</version.servlet-api>
         <version.slf4j>1.6.2</version.slf4j>
@@ -39,12 +40,6 @@
                 <groupId>com.twilio.sdk</groupId>
                 <artifactId>twilio-java-sdk</artifactId>
                 <version>${version.twilio}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-web-api</artifactId>
-                <version>${version.javaee-api}</version>
             </dependency>
 
             <dependency>
@@ -73,6 +68,49 @@
 
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-instrument</artifactId>
+                <version>${version.spring}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${version.spring}</version>
             </dependency>
@@ -87,14 +125,6 @@
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>${version.xmlapis}</version>
-            </dependency>
-
-            <!-- PROVIDED -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${version.servlet-api}</version>
-                <scope>provided</scope>
             </dependency>
 
             <!-- RUNTIME -->
@@ -124,6 +154,14 @@
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>${version.slf4j}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <!-- PROVIDED -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-web-api</artifactId>
+                <version>${version.javaee-api}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -187,6 +225,17 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${version.joda-time}</version>
         </dependency>
     </dependencies>
 

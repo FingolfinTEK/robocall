@@ -10,15 +10,19 @@ public class CallRequest {
     private String sid;
     private String text;
     private String language;
+    private String phoneNumber;
+    private String rootUrl;
     private Date redialTime;
 
     public CallRequest() {
     }
 
-    public CallRequest(String sid, String text, String language) {
+    public CallRequest(String sid, String text, String language, String phoneNumber, String rootUrl) {
         this.sid = sid;
         this.text = text;
         this.language = language;
+        this.phoneNumber = phoneNumber;
+        this.rootUrl = rootUrl;
     }
 
     @Id
@@ -59,6 +63,26 @@ public class CallRequest {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    @Basic
+    @Column(nullable = false)
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Basic
+    @Column(nullable = false)
+    public String getRootUrl() {
+        return rootUrl;
+    }
+
+    public void setRootUrl(String rootUrl) {
+        this.rootUrl = rootUrl;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
