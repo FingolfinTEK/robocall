@@ -1,7 +1,5 @@
 package com.fingy.robocall.util;
 
-import com.fingy.robocall.web.controller.dto.Response;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-          http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		  http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+          http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+          http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <jpa:repositories base-package="com.fingy.robocall.dao"/>
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/robocall-db"/>
 
     <context:property-placeholder location="http://dl.dropboxusercontent.com/s/h8mrp9qt9kt5ikv/applicaction.properties"/>
-    <context:component-scan base-package="com.fingy" />
+    <context:component-scan base-package="com.fingy.robocall"/>
 
     <mvc:annotation-driven/>
 
-    <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="classpath:META-INF/ehcache-config.xml"/>
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcacheManager"/>
-
-    <cache:annotation-driven cache-manager="cacheManager"/>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean" p:persistenceUnitName="robocall"/>
 
 </beans>

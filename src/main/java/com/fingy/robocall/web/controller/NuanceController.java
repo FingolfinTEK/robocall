@@ -1,7 +1,7 @@
 package com.fingy.robocall.web.controller;
 
 import com.fingy.robocall.service.NuanceTextToSpeechService;
-import com.fingy.robocall.web.controller.dto.RoboCallRequest;
+import com.fingy.robocall.model.dto.RoboCallRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

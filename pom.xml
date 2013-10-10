@@ -13,13 +13,15 @@
         <version.maven.compiler.plugin>3.1</version.maven.compiler.plugin>
 
         <version.commons-io>2.4</version.commons-io>
-        <version.ehcache>2.5.0</version.ehcache>
+        <version.hibernate>4.1.6.Final</version.hibernate>
         <version.httpclient>4.2.3</version.httpclient>
         <version.jackson>1.9.12</version.jackson>
+        <version.javaee-api>6.0</version.javaee-api>
         <version.logback>0.9.29</version.logback>
         <version.servlet-api>3.0.1</version.servlet-api>
         <version.slf4j>1.6.2</version.slf4j>
         <version.spring>3.2.3.RELEASE</version.spring>
+        <version.spring-data-jpa>1.2.0.RELEASE</version.spring-data-jpa>
         <version.tomcat7-maven-plugin>2.1</version.tomcat7-maven-plugin>
         <version.twilio>3.4.0</version.twilio>
         <version.xmlapis>1.4.01</version.xmlapis>
@@ -40,9 +42,9 @@
             </dependency>
 
             <dependency>
-                <groupId>net.sf.ehcache</groupId>
-                <artifactId>ehcache-core</artifactId>
-                <version>${version.ehcache}</version>
+                <groupId>javax</groupId>
+                <artifactId>javaee-web-api</artifactId>
+                <version>${version.javaee-api}</version>
             </dependency>
 
             <dependency>
@@ -76,6 +78,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${version.spring-data-jpa}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>xml-apis</groupId>
                 <artifactId>xml-apis</artifactId>
                 <version>${version.xmlapis}</version>
@@ -94,6 +102,13 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${version.logback}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${version.hibernate}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -130,13 +145,8 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
         </dependency>
 
         <dependency>
@@ -147,6 +157,11 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
 
         <dependency>
@@ -167,6 +182,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
         </dependency>
     </dependencies>
 

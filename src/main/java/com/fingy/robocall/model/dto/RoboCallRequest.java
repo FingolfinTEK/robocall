@@ -1,4 +1,4 @@
-package com.fingy.robocall.web.controller.dto;
+package com.fingy.robocall.model.dto;
 
 import com.fingy.robocall.util.RequestUtil;
 

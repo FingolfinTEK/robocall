@@ -1,4 +1,4 @@
-package com.fingy.robocall.web.controller.dto;
+package com.fingy.robocall.model.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
