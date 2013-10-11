@@ -57,7 +57,7 @@ public class TwilioServiceImpl implements TwilioService {
         String callbackUrl = rootUrl + "/twilio-callback?" + callRequest.toQueryParamString();
         String statusCallbackUrl = rootUrl + "/twilio-status-callback";
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair(URL_PARAM_NAME, callbackUrl));
         params.add(new BasicNameValuePair(TO_PARAM_NAME, callRequest.getPhoneNumber()));
         params.add(new BasicNameValuePair(FROM_PARAM_NAME, twilioPhoneNumber));
