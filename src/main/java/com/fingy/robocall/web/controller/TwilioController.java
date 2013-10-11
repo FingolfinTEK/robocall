@@ -3,7 +3,7 @@ package com.fingy.robocall.web.controller;
 import com.fingy.robocall.model.CallRequest;
 import com.fingy.robocall.model.dto.Response;
 import com.fingy.robocall.model.dto.RoboCallRequest;
-import com.fingy.robocall.service.impl.TwilioService;
+import com.fingy.robocall.service.TwilioService;
 import com.fingy.robocall.util.JAXBUtil;
 import com.fingy.robocall.util.RequestUtil;
 import com.twilio.sdk.TwilioRestException;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class TwilioController {
     }
 
     @RequestMapping(value = "/twilio-status-callback", method = {GET, POST})
-    public ResponseEntity<String> statusCallback(RoboCallRequest callRequest, HttpServletRequest request) throws Exception {
-        logger.info("Received callback " + callRequest);
-        String nuanceUrl = getNuanceControllerConversionUrl(callRequest, request);
-        return createResponse(JAXBUtil.marshallToString(new Response(nuanceUrl)));
+    public ResponseEntity<String> statusCallback(@RequestParam("CallSid") String callSid, @RequestParam("CallStatus") String callStatus) throws Exception {
+        logger.info("Received status callback for call {}, with status {}", callSid, callStatus);
+        twilioService.statusUpdate(callSid, callStatus);
+        return new ResponseEntity<>(callSid, HttpStatus.OK);
     }
 
     private String getNuanceControllerConversionUrl(RoboCallRequest callRequest, HttpServletRequest request) throws IOException {

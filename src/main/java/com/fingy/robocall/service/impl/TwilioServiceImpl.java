@@ -3,7 +3,7 @@ package com.fingy.robocall.service.impl;
 import com.fingy.robocall.dao.CallRequestRepository;
 import com.fingy.robocall.model.CallRequest;
 import com.fingy.robocall.model.dto.RoboCallRequest;
-import com.fingy.robocall.util.DateTimeUtil;
+import com.fingy.robocall.service.TwilioService;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.CallFactory;
@@ -78,11 +78,20 @@ public class TwilioServiceImpl implements TwilioService {
 
     @Override
     public void scheduleRedial(String callSid) {
-        final CallRequest callRequest = requestRepository.findBySid(callSid);
+        CallRequest callRequest = requestRepository.findBySid(callSid);
         DateTime current = new DateTime(DateTimeZone.forID("GMT+1"));
         DateTime redialTime = shouldReschedule(current) ? toEightThirtyAmTomorrow(current) : current.plusMinutes(15);
 
-        taskScheduler.schedule(new RedialRunnable(callRequest), redialTime.toDate());
+        callRequest.setRedialTime(redialTime.toDate());
+        CallRequest saved = requestRepository.save(callRequest);
+        taskScheduler.schedule(new RedialRunnable(saved), redialTime.toDate());
+    }
+
+    @Override
+    public void statusUpdate(String callSid, String callStatus) {
+        if ("busy".equals(callStatus) || "no-answer".equals(callStatus)) {
+            scheduleRedial(callSid);
+        }
     }
 
     private boolean shouldReschedule(DateTime redialTime) {

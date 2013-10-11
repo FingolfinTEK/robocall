@@ -2,7 +2,7 @@ package com.fingy.robocall.web.controller;
 
 import com.fingy.robocall.model.dto.RoboCallRequest;
 import com.fingy.robocall.service.NuanceTextToSpeechService;
-import com.fingy.robocall.service.impl.TwilioService;
+import com.fingy.robocall.service.TwilioService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

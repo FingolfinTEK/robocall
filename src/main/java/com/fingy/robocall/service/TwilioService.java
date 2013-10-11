@@ -1,4 +1,4 @@
-package com.fingy.robocall.service.impl;
+package com.fingy.robocall.service;
 
 import com.fingy.robocall.model.CallRequest;
 import com.fingy.robocall.model.dto.RoboCallRequest;
@@ -11,4 +11,6 @@ public interface TwilioService {
     CallRequest placeCall(RoboCallRequest callRequest, String callbackUrl) throws TwilioRestException, UnsupportedEncodingException;
 
     void scheduleRedial(String callSid);
+
+    void statusUpdate(String callSid, String callStatus);
 }
