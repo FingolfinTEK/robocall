@@ -92,6 +92,9 @@ public class TwilioServiceImpl implements TwilioService {
     public void statusUpdate(String callSid, String callStatus) {
         if ("busy".equals(callStatus) || "no-answer".equals(callStatus)) {
             scheduleRedial(callSid);
+        } else {
+            CallRequest toDelete = requestRepository.findBySid(callSid);
+            requestRepository.delete(toDelete);
         }
     }
 
