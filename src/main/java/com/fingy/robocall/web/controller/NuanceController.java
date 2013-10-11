@@ -1,5 +1,9 @@
 package com.fingy.robocall.web.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import com.fingy.robocall.model.dto.RoboCallRequest;
 import com.fingy.robocall.service.NuanceTextToSpeechService;
 import com.fingy.robocall.service.TwilioService;
@@ -16,10 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static com.fingy.robocall.util.SerializationUtil.deserializeFromString;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -51,10 +51,10 @@ public class NuanceController {
         }
     }
 
-    private ResponseEntity<byte[]> doConvert(RoboCallRequest conversionRequest) throws IOException, URISyntaxException {
-        if (key.equals(conversionRequest.getKey())) {
+    private ResponseEntity<byte[]> doConvert(RoboCallRequest request) throws IOException, URISyntaxException {
+        if (key.equals(request.getKey())) {
             try (ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
-                String contentType = textToSpeechService.convertToSpeech(conversionRequest.getText(), conversionRequest.getLanguage(), bytes);
+                String contentType = textToSpeechService.convertToSpeech(request.getText(), request.getLanguage(), bytes);
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.parseMediaType(contentType));
                 return new ResponseEntity<>(bytes.toByteArray(), headers, HttpStatus.OK);
@@ -63,10 +63,10 @@ public class NuanceController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(value = "/convert/{conversionRequest}", method = {GET, POST})
-    public ResponseEntity<byte[]> convert(@PathVariable("conversionRequest") String conversionRequest, @RequestParam("CallSid") String callSid) throws IOException,
+    @RequestMapping(value = "/convert/{conversionRequest}/{callSid}", method = {GET, POST})
+    public ResponseEntity<byte[]> convert(@PathVariable("conversionRequest") String conversionRequest, @PathVariable("callSid") String callSid) throws IOException,
             ClassNotFoundException {
-        logger.info("Received conversion request " + conversionRequest);
+        logger.info("Received conversion request {}, {}", conversionRequest, callSid);
         return convert((RoboCallRequest) deserializeFromString(conversionRequest), callSid);
     }
 }

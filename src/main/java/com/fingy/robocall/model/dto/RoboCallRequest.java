@@ -10,15 +10,17 @@ public class RoboCallRequest implements Serializable {
     private String text;
     private String language;
     private String phoneNumber;
+    private Integer loop;
     private String key;
 
     public RoboCallRequest() {
     }
 
-    public RoboCallRequest(String text, String language, String phoneNumber, String key) {
+    public RoboCallRequest(String text, String language, String phoneNumber, Integer loop, String key) {
         this.text = text;
         this.language = language;
         this.phoneNumber = phoneNumber;
+        this.loop = loop;
         this.key = key;
     }
 
@@ -46,6 +48,14 @@ public class RoboCallRequest implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public Integer getLoop() {
+        return loop;
+    }
+
+    public void setLoop(Integer loop) {
+        this.loop = loop;
+    }
+
     public String getKey() {
         return key;
     }
@@ -61,6 +71,11 @@ public class RoboCallRequest implements Serializable {
         builder.append("language=").append(encode(language));
         builder.append("&");
         builder.append("key=").append(encode(key));
+
+        if (loop != null) {
+            builder.append("&loop=").append(loop);
+        }
+
         return builder.toString();
     }
 

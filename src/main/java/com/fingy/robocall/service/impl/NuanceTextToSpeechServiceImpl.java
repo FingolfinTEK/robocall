@@ -134,14 +134,18 @@ public class NuanceTextToSpeechServiceImpl implements NuanceTextToSpeechService 
         HttpEntity resEntity = response.getEntity();
         logger.info("Received response with status {} and content length {}", response.getStatusLine(), resEntity.getContentLength());
 
+        copyResultIntoOutputStream(resEntity, outputStream);
+
+        String contentType = resEntity.getContentType().getValue();
+        EntityUtils.consume(resEntity);
+        return contentType;
+    }
+
+    private void copyResultIntoOutputStream(HttpEntity resEntity, OutputStream outputStream) {
         try {
             IOUtils.copy(resEntity.getContent(), outputStream);
         } catch (Exception e) {
             logger.error("Error reading response ", e);
         }
-
-        String contentType = resEntity.getContentType().getValue();
-        EntityUtils.consume(resEntity);
-        return contentType;
     }
 }

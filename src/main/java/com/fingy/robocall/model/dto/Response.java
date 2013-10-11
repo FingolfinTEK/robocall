@@ -10,20 +10,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Response {
 
     @XmlElement(name = "Play")
-    private String play;
+    private Play play;
 
     public Response() {
     }
 
-    public Response(String play) {
-        this.play = play;
+    public Response(String url, Integer loop) {
+        play = new Play(url, loop);
     }
 
-    public String getPlay() {
+    public Play getPlay() {
         return play;
     }
 
-    public void setPlay(String play) {
+    public void setPlay(Play play) {
         this.play = play;
     }
 }

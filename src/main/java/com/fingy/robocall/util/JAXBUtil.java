@@ -5,6 +5,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 
+import com.fingy.robocall.model.dto.Response;
+
 public class JAXBUtil {
 
     public static <T> String marshallToString(T response) throws JAXBException {
@@ -15,6 +17,9 @@ public class JAXBUtil {
         StringWriter writer = new StringWriter();
         jaxbMarshaller.marshal(response, writer);
         return writer.toString();
+    }
 
+    public static void main(String... args) throws JAXBException {
+        System.out.print(marshallToString(new Response("url", 1)));
     }
 }

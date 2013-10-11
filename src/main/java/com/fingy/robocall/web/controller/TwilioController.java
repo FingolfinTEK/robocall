@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import static com.fingy.robocall.util.SerializationUtil.serializeToString;
 import static org.springframework.http.MediaType.APPLICATION_XML;
@@ -47,7 +48,7 @@ public class TwilioController {
     public ResponseEntity<String> redirectToNuance(RoboCallRequest callRequest, HttpServletRequest request) throws Exception {
         logger.info("Received callback " + callRequest);
         String nuanceUrl = getNuanceControllerConversionUrl(callRequest, request);
-        return createResponse(JAXBUtil.marshallToString(new Response(nuanceUrl)));
+        return createResponse(JAXBUtil.marshallToString(new Response(nuanceUrl, callRequest.getLoop())));
     }
 
     @RequestMapping(value = "/twilio-status-callback", method = {GET, POST})
@@ -58,8 +59,10 @@ public class TwilioController {
     }
 
     private String getNuanceControllerConversionUrl(RoboCallRequest callRequest, HttpServletRequest request) throws IOException {
+        Map<String,String[]> parameterMap = request.getParameterMap();
+        String callSid = parameterMap.containsKey("CallSid") ? parameterMap.get("CallSid")[0] : "";
         String url = RequestUtil.getRequestPathBeforeFragment(request, "/call") + "/text-to-speech/convert/";
-        return url + RequestUtil.encode(serializeToString(callRequest));
+        return url + RequestUtil.encode(serializeToString(callRequest)) + "/" + callSid;
     }
 
     private ResponseEntity<String> createResponse(String twiMLResponse) {

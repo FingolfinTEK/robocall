@@ -82,6 +82,7 @@ public class TwilioServiceImpl implements TwilioService {
         DateTime current = new DateTime(DateTimeZone.forID("GMT+1"));
         DateTime redialTime = shouldReschedule(current) ? toEightThirtyAmTomorrow(current) : current.plusMinutes(15);
 
+        logger.info("Scheduling a redial for SID {}, redial time is {}", callSid, redialTime);
         callRequest.setRedialTime(redialTime.toDate());
         CallRequest saved = requestRepository.save(callRequest);
         taskScheduler.schedule(new RedialRunnable(saved), redialTime.toDate());
@@ -108,6 +109,7 @@ public class TwilioServiceImpl implements TwilioService {
         @Override
         public void run() {
             try {
+                logger.info("Redialing call {}", callRequest.getSid());
                 RoboCallRequest request = toRoboCallRequest(callRequest);
                 placeCall(request, callRequest.getRootUrl());
                 requestRepository.delete(callRequest);
@@ -117,7 +119,7 @@ public class TwilioServiceImpl implements TwilioService {
         }
 
         private RoboCallRequest toRoboCallRequest(CallRequest callRequest) {
-            return new RoboCallRequest(callRequest.getText(), callRequest.getLanguage(), callRequest.getPhoneNumber(), key);
+            return new RoboCallRequest(callRequest.getText(), callRequest.getLanguage(), callRequest.getPhoneNumber(), 1, key);
         }
     }
 }
