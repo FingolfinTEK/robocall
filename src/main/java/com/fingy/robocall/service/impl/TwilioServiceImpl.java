@@ -79,7 +79,7 @@ public class TwilioServiceImpl implements TwilioService {
     @Override
     public void scheduleRedial(String callSid) {
         CallRequest callRequest = requestRepository.findBySid(callSid);
-        DateTime current = new DateTime(DateTimeZone.forID("GMT+1"));
+        DateTime current = new DateTime(DateTimeZone.forID("Europe/Rome"));
         DateTime redialTime = shouldReschedule(current) ? toEightThirtyAmTomorrow(current) : current.plusMinutes(15);
 
         logger.info("Scheduling a redial for SID {}, redial time is {}", callSid, redialTime);
@@ -92,7 +92,7 @@ public class TwilioServiceImpl implements TwilioService {
     public void statusUpdate(String callSid, String callStatus) {
         if ("busy".equals(callStatus) || "no-answer".equals(callStatus)) {
             scheduleRedial(callSid);
-        } else {
+        } else if ("completed".equals(callStatus) || "failed".equals(callStatus)) {
             CallRequest toDelete = requestRepository.findBySid(callSid);
             requestRepository.delete(toDelete);
         }
