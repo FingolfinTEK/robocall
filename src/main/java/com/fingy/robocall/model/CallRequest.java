@@ -13,6 +13,7 @@ public class CallRequest {
     private String phoneNumber;
     private String rootUrl;
     private Date redialTime;
+    private Integer redialCount = 0;
 
     public CallRequest() {
     }
@@ -92,5 +93,15 @@ public class CallRequest {
 
     public void setRedialTime(Date redialTime) {
         this.redialTime = redialTime;
+    }
+
+    @Basic
+    @Column(nullable = false)
+    public Integer getRedialCount() {
+        return redialCount;
+    }
+
+    public void setRedialCount(Integer redialCount) {
+        this.redialCount = redialCount;
     }
 }
